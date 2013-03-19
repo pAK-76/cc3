@@ -13,6 +13,8 @@
 		A2BC0BE216F857EF00A1AE5F /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A2BC0BE016F857EF00A1AE5F /* Credits.rtf */; };
 		A2BC0BE516F857EF00A1AE5F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BC0BE416F857EF00A1AE5F /* AppDelegate.m */; };
 		A2BC0BE816F857EF00A1AE5F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BC0BE616F857EF00A1AE5F /* MainMenu.xib */; };
+		A2BC0BF816F8597B00A1AE5F /* Grammar.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BC0BF416F8597B00A1AE5F /* Grammar.m */; };
+		A2BC0BF916F8597B00A1AE5F /* GrammarController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BC0BF716F8597B00A1AE5F /* GrammarController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,10 @@
 		A2BC0BE316F857EF00A1AE5F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A2BC0BE416F857EF00A1AE5F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		A2BC0BE716F857EF00A1AE5F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		A2BC0BF316F8597B00A1AE5F /* Grammar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Grammar.h; sourceTree = "<group>"; };
+		A2BC0BF416F8597B00A1AE5F /* Grammar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Grammar.m; sourceTree = "<group>"; };
+		A2BC0BF616F8597B00A1AE5F /* GrammarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrammarController.h; sourceTree = "<group>"; };
+		A2BC0BF716F8597B00A1AE5F /* GrammarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrammarController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +88,8 @@
 		A2BC0BD716F857EF00A1AE5F /* 3 */ = {
 			isa = PBXGroup;
 			children = (
+				A2BC0BF216F8597B00A1AE5F /* Logic */,
+				A2BC0BF516F8597B00A1AE5F /* UI */,
 				A2BC0BE316F857EF00A1AE5F /* AppDelegate.h */,
 				A2BC0BE416F857EF00A1AE5F /* AppDelegate.m */,
 				A2BC0BE616F857EF00A1AE5F /* MainMenu.xib */,
@@ -100,6 +108,24 @@
 				A2BC0BE016F857EF00A1AE5F /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A2BC0BF216F8597B00A1AE5F /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				A2BC0BF316F8597B00A1AE5F /* Grammar.h */,
+				A2BC0BF416F8597B00A1AE5F /* Grammar.m */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		A2BC0BF516F8597B00A1AE5F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A2BC0BF616F8597B00A1AE5F /* GrammarController.h */,
+				A2BC0BF716F8597B00A1AE5F /* GrammarController.m */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +194,8 @@
 			files = (
 				A2BC0BDE16F857EF00A1AE5F /* main.m in Sources */,
 				A2BC0BE516F857EF00A1AE5F /* AppDelegate.m in Sources */,
+				A2BC0BF816F8597B00A1AE5F /* Grammar.m in Sources */,
+				A2BC0BF916F8597B00A1AE5F /* GrammarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
