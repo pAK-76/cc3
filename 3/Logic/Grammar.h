@@ -8,31 +8,32 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kTerminals;
-extern NSString * const kNTerminals;
 extern NSString * const kEmptyString;
-extern NSString * const kKSRulePattern;
 
 @interface Rule : NSObject
 
++(Rule*)ruleFrom:(NSString*)from to:(NSArray*)to;
+
 @property (copy) NSString *antecedent;
-@property (copy) NSString *consequent;
+@property (copy) NSArray *consequent;
 
 @end
 
-@interface Grammar : NSObject
+@interface Grammar : NSObject <NSTableViewDataSource>
 {
-    NSMutableArray *_terms;
-    NSMutableArray *_nterms;
+    NSArray *_terms;
+    NSArray *_nterms;
     NSString *_axiom;
-    NSMutableArray *_rules;
+    NSArray *_rules;
 }
--(Grammar*)initWithStrings:(NSArray*)strings;
--(Grammar*)initWithStrings:(NSArray *)strings axiom:(NSString*)axiom;
+
++(Grammar*)instance;
 
 -(NSArray*)terms;
 -(NSArray*)nterms;
 -(NSString*)axiom;
 -(NSArray*)rules;
+
+-(NSArray*)alternativesFor:(NSString*)nterm;
 
 @end

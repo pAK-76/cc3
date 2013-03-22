@@ -9,13 +9,23 @@
 #import "Grammar.h"
 
 
+
+
 @implementation Rule
 @synthesize antecedent = _antecedent;
 @synthesize consequent = _consequent;
 
++(Rule *)ruleFrom:(NSString *)from to:(NSArray *)to
+{
+    Rule *result = [[Rule alloc] init];
+    result->_antecedent = from;
+    result->_consequent = to;
+    return result;
+}
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ -> %@", _antecedent, _consequent];
+    return [NSString stringWithFormat:@"%@ -> %@", _antecedent, [_consequent componentsJoinedByString:@" "]];
 }
 -(id)copy
 {
@@ -31,113 +41,139 @@
     }
     Rule *another = (Rule*)object;
     return [_antecedent isEqualToString:another->_antecedent]
-        && [_consequent isEqualToString:another->_consequent];
+        && [_consequent isEqualTo:another->_consequent];
 }
 @end
 
+
+
 @implementation Grammar
 
+static Grammar *_instance;
+
 #define EMPTY_STRING @"λ"
-
-NSString * const kNTerminals  = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-NSString * const kTerminals = @"abcdefghijklmnopqrstuvwxyz+-*/";
 NSString * const kEmptyString = EMPTY_STRING;
-NSString * const kKSRulePattern = @"[A-Z] ?-> ?[A-Za-z+\\-*/"EMPTY_STRING@"]*?";
 
--(Grammar *)initWithStrings:(NSArray *)strings axiom:(NSString *)axiom
++(Grammar *)instance
 {
-    self = [self initWithStrings:strings];
-    if (self) {
-        _axiom = axiom;
+    if (!_instance) {
+        _instance = [[Grammar alloc] init];
     }
-    return self;
+    return _instance;
 }
--(Grammar *)initWithStrings:(NSArray *)strings
+
+-(id)init
 {
     self = [super init];
     if (self) {
-        _terms = [[NSMutableArray alloc] init];
-        _nterms = [[NSMutableArray alloc] init];
-        _rules = [[NSMutableArray alloc] init];
-        for (NSString *str in strings) {
-            NSArray * comps = [str componentsSeparatedByString:@"->"];
-            assert(comps.count == 2);
-            Rule *rule = [[Rule alloc] init];
-            rule.antecedent = [comps[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            rule.consequent = [comps[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            [_rules addObject:rule];
-            for(NSUInteger i=0; i<rule.antecedent.length; ++i) {
-                NSString *symbol = [rule.antecedent substringWithRange:NSMakeRange(i, 1)];
-                if ([kNTerminals rangeOfString:symbol].location != NSNotFound) {
-                    if (![_nterms containsObject:symbol]) {
-                        [_nterms addObject:symbol];
-                    }
-                } else {
-                    NSLog(@"Antecedent contains forbidden symbols");
-                }
-            }
-            for(NSUInteger i=0; i<rule.consequent.length; ++i) {
-                NSString *symbol = [rule.consequent substringWithRange:NSMakeRange(i, 1)];
-                if ([kNTerminals rangeOfString:symbol].location != NSNotFound) {
-                    if (![_nterms containsObject:symbol]) {
-                        [_nterms addObject:symbol];
-                    }
-                } else if ([kTerminals rangeOfString:symbol].location != NSNotFound) {
-                    if (![_terms containsObject:symbol]) {
-                        [_terms addObject:symbol];
-                    }
-                } else if (![symbol isEqualToString:kEmptyString]) {
-                    NSLog(@"Consequent contains forbidden symbols");
-                }
-            }
-            
-            if ([_nterms containsObject:@"S"]) {
-                _axiom = @"S";
-            } else if ([_nterms containsObject:@"A"]) {
-                _axiom = @"A";
-            } else {
-                _axiom = _nterms[0];
-            }
-        }
+        _terms = @[
+                  @"a",     //0
+                  @"x",     //1
+                  @"=",     //2
+                  @"<>",    //3
+                  @">",     //4
+                  @"<",     //5
+                  @">=",    //6
+                  @"<=",    //7
+                  @"+",     //8
+                  @"-",     //9
+                  @"||",    //10
+                  @"or",    //11
+                  @"*",     //12
+                  @"/",     //13
+                  @"div",   //14
+                  @"%",     //15
+                  @"mod",   //16
+                  @"&&",    //17
+                  @"and",   //18
+                  @"(",     //19
+                  @")",     //20
+                  @"not"    //21
+        ];
+        _axiom = @"<Выражение>";
+        _nterms = @[
+                   _axiom,                      //0
+                   @"<Простое выражение>",      //1
+                   @"<Терм>",                   //2
+                   @"<Фактор>",                 //3
+                   @"<Операция отношения>",     //4
+                   @"<Знак>",                   //5
+                   @"<Операция типа сложения>", //6
+                   @"<Операция типа умножения>" //7
+        ];
+        _rules = @[
+                   [Rule ruleFrom:_nterms[0] to:@[ _nterms[1] ]],
+                   [Rule ruleFrom:_nterms[0] to:@[ _nterms[4], _nterms[1], _nterms[4] ]],
+                   [Rule ruleFrom:_nterms[1] to:@[ _nterms[2] ]],
+                   [Rule ruleFrom:_nterms[1] to:@[ _nterms[5], _nterms[2] ]],
+                   [Rule ruleFrom:_nterms[1] to:@[ _nterms[1], _nterms[6], _nterms[2] ]],
+                   [Rule ruleFrom:_nterms[2] to:@[ _nterms[3] ]],
+                   [Rule ruleFrom:_nterms[2] to:@[ _nterms[2], _nterms[7], _nterms[3] ]],
+                   [Rule ruleFrom:_nterms[3] to:@[ _terms[0] ]],
+                   [Rule ruleFrom:_nterms[3] to:@[ _terms[1] ]],
+                   [Rule ruleFrom:_nterms[3] to:@[ _terms[19], _nterms[1], _terms[20] ]],
+                   [Rule ruleFrom:_nterms[3] to:@[ _terms[21], _nterms[3] ]],
+                   [Rule ruleFrom:_nterms[4] to:@[ _terms[2] ]],
+                   [Rule ruleFrom:_nterms[4] to:@[ _terms[3] ]],
+                   [Rule ruleFrom:_nterms[4] to:@[ _terms[4] ]],
+                   [Rule ruleFrom:_nterms[4] to:@[ _terms[5] ]],
+                   [Rule ruleFrom:_nterms[4] to:@[ _terms[6] ]],
+                   [Rule ruleFrom:_nterms[4] to:@[ _terms[7] ]],
+                   [Rule ruleFrom:_nterms[5] to:@[ _terms[8] ]],
+                   [Rule ruleFrom:_nterms[5] to:@[ _terms[9] ]],
+                   [Rule ruleFrom:_nterms[6] to:@[ _terms[8] ]],
+                   [Rule ruleFrom:_nterms[6] to:@[ _terms[9] ]],
+                   [Rule ruleFrom:_nterms[6] to:@[ _terms[10] ]],
+                   [Rule ruleFrom:_nterms[6] to:@[ _terms[11] ]],
+                   [Rule ruleFrom:_nterms[7] to:@[ _terms[12] ]],
+                   [Rule ruleFrom:_nterms[7] to:@[ _terms[13] ]],
+                   [Rule ruleFrom:_nterms[7] to:@[ _terms[14] ]],
+                   [Rule ruleFrom:_nterms[7] to:@[ _terms[15] ]],
+                   [Rule ruleFrom:_nterms[7] to:@[ _terms[16] ]],
+                   [Rule ruleFrom:_nterms[7] to:@[ _terms[17] ]],
+                   [Rule ruleFrom:_nterms[7] to:@[ _terms[18] ]]
+        ];
     }
-    
     return self;
 }
 
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return [self descriptionStrings].count;
+}
+-(id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    return [self descriptionStrings][row];
+}
+-(NSArray*)descriptionStrings
+{
+    NSMutableArray *result = [NSMutableArray array];
+    [result addObject:[super description]];
+    [result addObject:[NSString stringWithFormat:@"Терминалы: %@", [_terms componentsJoinedByString:@", "]]];
+    [result addObject:@""];
+    [result addObject:[NSString stringWithFormat:@"Нетерминалы: %@", [_nterms componentsJoinedByString:@", "]]];
+    [result addObject:@""];
+    [result addObject:[NSString stringWithFormat:@"Аксиома: %@", _axiom]];
+    [result addObject:@""];
+    [result addObject:@"Правила:"];
+    for (Rule *rule in _rules) {
+        [result addObject:[NSString stringWithFormat:@"%@", rule]];
+    }
+    return [NSArray arrayWithArray:result];
+}
 -(NSString *)description
 {
-    NSMutableString *description = [NSMutableString stringWithFormat:@"%@", [super description]];
-    
-    NSMutableString *terms = [[NSMutableString alloc] initWithString:@"Терминалы: "];
-    for (NSString *term in _terms) {
-        [terms appendString:term];
-    }
-    [description appendFormat:@"\n%@", terms];
-    
-    NSMutableString *nterms = [[NSMutableString alloc] initWithString:@"Нетерминалы: "];
-    for (NSString *nterm in _nterms) {
-        [nterms appendString:nterm];
-    }
-    [description appendFormat:@"\n%@", nterms];
-    [description appendFormat:@"\nАксиома: %@", _axiom];
-    
-    [description appendString:@"\nПравила: "];
-    for (Rule *rule in _rules) {
-        [description appendFormat:@"\n%@", rule];
-    }
-    [description appendString:@"\n\n"];
-    
-    return description;
+    return [[self descriptionStrings] componentsJoinedByString:@"\n"];
 }
 
 #pragma mark getters
 -(NSArray *)terms
 {
-    return [NSArray arrayWithArray:_terms];
+    return _terms;
 }
 -(NSArray *)nterms
 {
-    return [NSArray arrayWithArray:_nterms];
+    return _nterms;
 }
 -(NSString *)axiom
 {
@@ -145,20 +181,18 @@ NSString * const kKSRulePattern = @"[A-Z] ?-> ?[A-Za-z+\\-*/"EMPTY_STRING@"]*?";
 }
 -(NSArray *)rules
 {
-    return [NSArray arrayWithArray:_rules];
+    return _rules;
 }
 
-#pragma mark algorithms
--(BOOL)_set:(NSMutableArray*)set containsObject:(id)object
+-(NSArray *)alternativesFor:(NSString *)nterm
 {
-    BOOL result = NO;
-    for (id obj in set) {
-        if ([obj isEqualTo:object]) {
-            result = YES;
-            break;
+    NSMutableArray *result = [NSMutableArray array];
+    for (Rule *rule in _rules) {
+        if ([rule.antecedent isEqualTo:nterm]) {
+            [result addObject:rule.consequent];
         }
     }
-    return result;
+    return [NSArray arrayWithArray:result];
 }
 
 @end

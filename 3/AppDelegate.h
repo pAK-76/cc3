@@ -7,12 +7,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "GrammarController.h"
+#import "Analyzer.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
+{
+    Grammar *_gr;
+    Analyzer *_analyzer;
+}
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSTextView *logView;
-@property (assign) IBOutlet GrammarController *grController;
+@property (assign) IBOutlet NSTextView *grammarView;
+@property (assign) IBOutlet NSTextField *chainField;
 
 @end
