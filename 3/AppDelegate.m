@@ -18,6 +18,7 @@
 -(void)awakeFromNib
 {
     _gr = [Grammar instance];
+    [_gr removeLeftRecursy];
     [_grammarView setEditable:NO];
     [_grammarView setSelectable:YES];
     [_grammarView setString:_gr.description];
@@ -29,17 +30,20 @@
 {
     NSString *chain = [_chainField stringValue];
     [_logView setString:@""];
+
     if ([_analyzer analyze:chain withLogHandler:^(NSString *logString) {
         [self backLog:logString];
 //        [self performSelectorInBackground:@selector(backLog:) withObject:logString];
     }]) {
         [self backLog:@"Допустимое выражение"];
+    } else {
+        [self backLog:@"Недопустимое выражение"];
     }
 }
 
 -(void)backLog:(NSString*)logString
 {
-    NSLog(@"%@", logString);
+//    NSLog(@"%@", logString);
     [_logView setString:[NSString stringWithFormat:@"%@\n%@", _logView.string, logString]];
 }
 

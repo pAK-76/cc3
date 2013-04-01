@@ -62,7 +62,7 @@
                 } else {
                     NSString *sym = _l2[0];
                     if ([_grammar.terms containsObject:sym]) {
-                        if ([_tested[_cur] isEqualTo:sym]) {
+                        if (_cur < _tested.count && [_tested[_cur] isEqualTo:sym]) {
                             [self successfulComparison];
                         } else {
                             [self failedComparison];
@@ -128,6 +128,9 @@
         }
         NSString *curSymbol = [[str substringWithRange:NSMakeRange(i, j)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if ([_grammar.terms containsObject:curSymbol]) {
+            if (i+j+1 <= str.length && [_grammar.terms containsObject:[[str substringWithRange:NSMakeRange(i, j+1)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]) {
+                continue;
+            }
             [result addObject:curSymbol];
             i += j;
             j = 0;

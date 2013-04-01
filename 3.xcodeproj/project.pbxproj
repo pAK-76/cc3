@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A227FB4816FC4B0F008D74E6 /* Analyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = A227FB4716FC4B0F008D74E6 /* Analyzer.m */; };
+		A2AF5FEE17096B8E00197184 /* grammar.txt in Resources */ = {isa = PBXBuildFile; fileRef = A2AF5FED17096B8E00197184 /* grammar.txt */; };
 		A2BC0BD216F857EF00A1AE5F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2BC0BD116F857EF00A1AE5F /* Cocoa.framework */; };
 		A2BC0BDC16F857EF00A1AE5F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2BC0BDA16F857EF00A1AE5F /* InfoPlist.strings */; };
 		A2BC0BDE16F857EF00A1AE5F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BC0BDD16F857EF00A1AE5F /* main.m */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		A227FB4616FC4B0F008D74E6 /* Analyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analyzer.h; sourceTree = "<group>"; };
 		A227FB4716FC4B0F008D74E6 /* Analyzer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analyzer.m; sourceTree = "<group>"; };
+		A2AF5FED17096B8E00197184 /* grammar.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = grammar.txt; path = ../grammar.txt; sourceTree = "<group>"; };
 		A2BC0BCE16F857EF00A1AE5F /* 3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2BC0BD116F857EF00A1AE5F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A2BC0BD416F857EF00A1AE5F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -88,6 +90,7 @@
 		A2BC0BD716F857EF00A1AE5F /* 3 */ = {
 			isa = PBXGroup;
 			children = (
+				A2AF5FED17096B8E00197184 /* grammar.txt */,
 				A2BC0BF216F8597B00A1AE5F /* Logic */,
 				A2BC0BE316F857EF00A1AE5F /* AppDelegate.h */,
 				A2BC0BE416F857EF00A1AE5F /* AppDelegate.m */,
@@ -174,6 +177,7 @@
 				A2BC0BDC16F857EF00A1AE5F /* InfoPlist.strings in Resources */,
 				A2BC0BE216F857EF00A1AE5F /* Credits.rtf in Resources */,
 				A2BC0BE816F857EF00A1AE5F /* MainMenu.xib in Resources */,
+				A2AF5FEE17096B8E00197184 /* grammar.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

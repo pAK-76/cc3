@@ -34,6 +34,8 @@ extern NSString * const kEmptyString;
 -(NSString*)axiom;
 -(NSArray*)rules;
 
+-(void)removeLeftRecursy;
+
 -(NSArray*)alternativesFor:(NSString*)nterm;
 
 @end
